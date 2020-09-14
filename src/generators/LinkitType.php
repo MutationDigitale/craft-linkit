@@ -8,6 +8,7 @@ use craft\gql\base\SingleGeneratorInterface;
 use craft\gql\GqlEntityRegistry;
 use craft\gql\TypeManager;
 use fruitstudios\linkit\Linkit;
+use fruitstudios\linkit\models\LinkitGqlType;
 
 class LinkitType implements GeneratorInterface, SingleGeneratorInterface
 {
@@ -20,37 +21,29 @@ class LinkitType implements GeneratorInterface, SingleGeneratorInterface
         $gqlTypes = [];
 
         foreach ($linkTypes as $linkType) {
-            if ($linkType->elementGqlType() === null) continue;
+            $typeName = self::getFieldType($context);
 
-            $gqlTypes[] = static::generateType($linkType);
+            $elementGqlInterface = $context->elementGqlInterface();
+
+            if ($linkType->$elementGqlInterface() === null) continue;
+
+            $fields = TypeManager::prepareFieldDefinitions($elementGqlInterface::getFieldDefinitions(), $typeName);
+
+            $type = GqlEntityRegistry::getEntity($typeName) ?: GqlEntityRegistry::createEntity(
+                $typeName,
+                new \GraphQL\Type\Definition\ObjectType(
+                    [
+                        'name' => $typeName,
+                        'fields' => $fields,
+                        'interfaces' => [LinkitGqlType::getInterfaceType()]
+                    ]
+                )
+            );
+
+            $gqlTypes[] = $type;
         }
 
         return $gqlTypes;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public static function generateType($context): ObjectType
-    {
-        $typeName = self::getFieldType($context);
-
-        $elementGqlType = $context->elementGqlType();
-        $elementGqlInterface = $context->elementGqlInterface();
-
-        $fields = TypeManager::prepareFieldDefinitions($elementGqlInterface::getFieldDefinitions(), $typeName);
-
-        return GqlEntityRegistry::getEntity($typeName) ?: GqlEntityRegistry::createEntity(
-            $typeName,
-            new $elementGqlType(
-                [
-                    'name' => $typeName,
-                    'fields' => function () use ($fields) {
-                        return $fields;
-                    }
-                ]
-            )
-        );
     }
 
     private static function getFieldType($type): string
