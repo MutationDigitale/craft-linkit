@@ -37,9 +37,12 @@ class LinkitType implements GeneratorInterface, SingleGeneratorInterface
         $typeName = self::getFieldType($context);
         $elementGqlInterface = $context->elementGqlInterface();
         $fieldName = $context->getTypeHandle();
-        $fields = [
-            $fieldName => $elementGqlInterface::getFieldDefinitions()
-        ];
+
+        $elementFields = array($fieldName => $elementGqlInterface::getFieldDefinitions());
+        $fields = array_merge(
+            LinkitGqlType::getFieldDefinitions(),
+            $elementFields
+        );
 
         return GqlEntityRegistry::getEntity($typeName) ?: GqlEntityRegistry::createEntity(
             $typeName,
