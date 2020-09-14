@@ -46,7 +46,7 @@ class LinkitType implements GeneratorInterface, SingleGeneratorInterface
                 [
                     'name' => $typeName,
                     'fields' => $fields,
-                    'interfaces' => [LinkitGqlType::getInterfaceType()]
+                    //'interfaces' => [LinkitGqlType::getInterfaceType()]
                 ]
             )
         );
