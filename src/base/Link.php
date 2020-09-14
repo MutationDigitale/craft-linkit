@@ -64,6 +64,11 @@ abstract class Link extends SavableComponent implements LinkInterface
         return null;
     }
 
+    public static function elementGqlInterface()
+    {
+        return null;
+    }
+
     public static function hasElement(): bool
     {
         return (static::elementType() ?? false) ? true : false;

@@ -3,8 +3,8 @@ namespace fruitstudios\linkit\models;
 
 use Craft;
 
-use craft\gql\interfaces\elements\Category as CraftCategoryGql;
-use fruitstudios\linkit\Linkit;
+use craft\gql\interfaces\elements\Category as CraftCategoryGqlInterface;
+use craft\gql\types\elements\Category as CraftCategoryGqlType;
 use fruitstudios\linkit\base\ElementLink;
 
 use craft\elements\Category as CraftCategory;
@@ -26,7 +26,12 @@ class Category extends ElementLink
 
     public static function elementGqlType()
     {
-        return CraftCategoryGql::class;
+        return CraftCategoryGqlType::class;
+    }
+
+    public static function elementGqlInterface()
+    {
+        return CraftCategoryGqlInterface::class;
     }
 
     // Public Methods

@@ -20,6 +20,7 @@ interface LinkInterface extends SavableComponentInterface
     public static function hasSettings(): bool;
     public static function elementType();
     public static function elementGqlType();
+    public static function elementGqlInterface();
     public static function hasElement(): bool;
 
     // Public Methods
