@@ -2,17 +2,9 @@
 
 namespace fruitstudios\linkit\models;
 
-use craft\base\Field;
 use craft\gql\GqlEntityRegistry;
-use craft\gql\interfaces\Element;
-use craft\gql\interfaces\elements\GlobalSet as GlobalSetInterface;
-use craft\gql\TypeManager;
-use craft\gql\types\elements\GlobalSet;
-use fruitstudios\linkit\base\ElementLink;
-use fruitstudios\linkit\base\LinkInterface;
-use fruitstudios\linkit\Linkit;
+use fruitstudios\linkit\generators\LinkitType;
 use GraphQL\Type\Definition\InterfaceType;
-use GraphQL\Type\Definition\ObjectType;
 use GraphQL\Type\Definition\Type;
 
 /**
@@ -50,7 +42,7 @@ class LinkitGqlType
             )
         );
 
-        self::generateTypes();
+        LinkitType::generateTypes();
 
         return $type;
     }
@@ -82,43 +74,6 @@ class LinkitGqlType
     public static function resolveTypeName($type)
     {
         return self::getFieldType($type);
-    }
-
-    public static function generateTypes()
-    {
-        $linkTypes = Linkit::$plugin->service->getAvailableLinkTypes();
-        $gqlTypes = [];
-
-        foreach ($linkTypes as $linkType) {
-            $gqlTypes[] = static::generateType($linkType);
-        }
-
-        return $gqlTypes;
-    }
-
-    public static function generateType(LinkInterface $linkType)
-    {
-        $typeName = self::getFieldType($linkType);
-
-        $elementGqlType = $linkType->elementGqlType();
-
-        if ($elementGqlType === null) {
-            return null;
-        }
-
-        $fields = TypeManager::prepareFieldDefinitions($elementGqlType::getFieldDefinitions(), $typeName);
-
-        return GqlEntityRegistry::getEntity($typeName) ?: GqlEntityRegistry::createEntity(
-            $typeName,
-            new ObjectType(
-                [
-                    'name' => $typeName,
-                    'fields' => function () use ($fields) {
-                        return $fields;
-                    }
-                ]
-            )
-        );
     }
 
     private static function getFieldType($type): string
