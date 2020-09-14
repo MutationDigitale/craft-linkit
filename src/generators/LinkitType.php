@@ -20,7 +20,7 @@ class LinkitType implements GeneratorInterface, SingleGeneratorInterface
         $gqlTypes = [];
 
         foreach ($linkTypes as $linkType) {
-            if ($context->elementGqlType() === null) continue;
+            if ($linkType->elementGqlType() === null) continue;
 
             $gqlTypes[] = static::generateType($linkType);
         }
