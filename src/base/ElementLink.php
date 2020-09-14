@@ -28,11 +28,6 @@ abstract class ElementLink extends Link
         return Element::class;
     }
 
-    public static function elementGqlType()
-    {
-        return GqlElementType::class;
-    }
-
     public static function elementGqlInterface()
     {
         return GqlElementInterface::class;
