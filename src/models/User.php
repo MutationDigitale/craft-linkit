@@ -3,6 +3,7 @@ namespace fruitstudios\linkit\models;
 
 use Craft;
 
+use craft\gql\arguments\elements\User as CraftUserGqlArguments;
 use craft\gql\interfaces\elements\User as CraftUserGqlInterface;
 use fruitstudios\linkit\base\ElementLink;
 
@@ -31,6 +32,11 @@ class User extends ElementLink
     public static function elementGqlInterface()
     {
         return CraftUserGqlInterface::class;
+    }
+
+    public static function elementGqlArguments()
+    {
+        return CraftUserGqlArguments::class;
     }
 
     public static function settingsTemplatePath(): string

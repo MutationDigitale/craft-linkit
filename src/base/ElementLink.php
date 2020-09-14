@@ -2,7 +2,6 @@
 namespace fruitstudios\linkit\base;
 
 use craft\gql\interfaces\Element as GqlElementInterface;
-use craft\gql\types\elements\Element as GqlElementType;
 use fruitstudios\linkit\Linkit;
 
 use Craft;
@@ -31,6 +30,11 @@ abstract class ElementLink extends Link
     public static function elementGqlInterface()
     {
         return GqlElementInterface::class;
+    }
+
+    public static function elementGqlArguments()
+    {
+        return null;
     }
 
     public static function settingsTemplatePath(): string

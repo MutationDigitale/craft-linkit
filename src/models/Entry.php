@@ -3,6 +3,7 @@ namespace fruitstudios\linkit\models;
 
 use Craft;
 
+use craft\gql\arguments\elements\Entry as CraftEntryGqlArguments;
 use craft\gql\interfaces\elements\Entry as CraftEntryGqlInterface;
 use fruitstudios\linkit\base\ElementLink;
 
@@ -26,6 +27,11 @@ class Entry extends ElementLink
     public static function elementGqlInterface()
     {
         return CraftEntryGqlInterface::class;
+    }
+
+    public static function elementGqlArguments()
+    {
+        return CraftEntryGqlArguments::class;
     }
 
     // Public Methods

@@ -3,10 +3,8 @@
 namespace fruitstudios\linkit\generators;
 
 use craft\gql\base\GeneratorInterface;
-use craft\gql\base\ObjectType;
 use craft\gql\base\SingleGeneratorInterface;
 use craft\gql\GqlEntityRegistry;
-use craft\gql\TypeManager;
 use fruitstudios\linkit\Linkit;
 use fruitstudios\linkit\models\LinkitGqlType;
 
@@ -38,9 +36,14 @@ class LinkitType implements GeneratorInterface, SingleGeneratorInterface
     {
         $typeName = self::getFieldType($context);
         $elementGqlInterface = $context->elementGqlInterface();
+        $elementGqlArguments = $context->elementGqlArguments();
         $fieldName = $context->getTypeHandle();
 
-        $elementFields = array($fieldName => $elementGqlInterface::getFieldDefinitions());
+        $elementFields = array($fieldName => array(
+            'name' => $fieldName,
+            'type' => $elementGqlInterface::getType(),
+            'args' => $elementGqlArguments::getArguments(),
+        ));
         $fields = array_merge(
             LinkitGqlType::getFieldDefinitions(),
             $elementFields

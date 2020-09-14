@@ -4,6 +4,7 @@ namespace fruitstudios\linkit\models;
 use Craft;
 
 use craft\gql\interfaces\elements\Asset as CraftAssetGqlInterface;
+use craft\gql\arguments\elements\Asset as CraftAssetGqlArguments;
 use fruitstudios\linkit\base\ElementLink;
 
 use craft\elements\Asset as CraftAsset;
@@ -26,6 +27,11 @@ class Asset extends ElementLink
     public static function elementGqlInterface()
     {
         return CraftAssetGqlInterface::class;
+    }
+
+    public static function elementGqlArguments()
+    {
+        return CraftAssetGqlArguments::class;
     }
 
     // Public Methods
