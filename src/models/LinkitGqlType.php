@@ -100,26 +100,13 @@ class LinkitGqlType
     {
         $typeName = self::getFieldType($linkType);
 
-        $elementType = $linkType->elementType();
+        $elementGqlType = $linkType->elementGqlType();
 
-        if ($elementType === null) {
+        if ($elementGqlType === null) {
             return null;
         }
 
-        $elementGqlType = $linkType->elementGqlType();
-
-        $contentFields = $elementType::getFields();
-        $contentFieldGqlTypes = [];
-
-        /** @var Field $contentField */
-        foreach ($contentFields as $contentField) {
-            $contentFieldGqlTypes[$contentField->handle] = $contentField->getContentGqlType();
-        }
-
-        $fields = TypeManager::prepareFieldDefinitions(
-            array_merge($elementGqlType::getFieldDefinitions(), $contentFieldGqlTypes),
-            $typeName
-        );
+        $fields = TypeManager::prepareFieldDefinitions($elementGqlType::getFieldDefinitions(), $typeName);
 
         return GqlEntityRegistry::getEntity($typeName) ?: GqlEntityRegistry::createEntity(
             $typeName,
