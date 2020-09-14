@@ -108,7 +108,7 @@ class LinkitGqlType
 
         $elementGqlType = $linkType->elementGqlType();
 
-        $contentFields = $elementType->getFields();
+        $contentFields = $elementType::getFields();
         $contentFieldGqlTypes = [];
 
         /** @var Field $contentField */
