@@ -1,6 +1,7 @@
 <?php
 namespace fruitstudios\linkit\fields;
 
+use craft\helpers\Html;
 use fruitstudios\linkit\Linkit;
 use fruitstudios\linkit\assetbundles\field\FieldAssetBundle;
 use fruitstudios\linkit\assetbundles\fieldsettings\FieldSettingsAssetBundle;
@@ -167,7 +168,7 @@ class LinkitField extends Field implements PreviewableFieldInterface
         $view->registerAssetBundle(FieldAssetBundle::class);
 
         // Get our id and namespace
-        $id = $view->formatInputId($this->handle);
+        $id = Html::id($this->handle);
         $namespacedId = $view->namespaceInputId($id);
 
         // Javascript

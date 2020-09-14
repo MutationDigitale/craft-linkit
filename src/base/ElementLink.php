@@ -1,6 +1,7 @@
 <?php
 namespace fruitstudios\linkit\base;
 
+use craft\gql\interfaces\Element as GqlElement;
 use fruitstudios\linkit\Linkit;
 
 use Craft;
@@ -24,6 +25,11 @@ abstract class ElementLink extends Link
     public static function elementType()
     {
         return Element::class;
+    }
+
+    public static function elementGqlType()
+    {
+        return GqlElement::class;
     }
 
     public static function settingsTemplatePath(): string
