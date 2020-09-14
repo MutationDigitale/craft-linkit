@@ -102,6 +102,12 @@ class LinkitGqlType
 
         $elementType = $linkType->elementType();
 
+        if ($elementType === null) {
+            return null;
+        }
+
+        $elementGqlType = $linkType->elementGqlType();
+
         $contentFields = $elementType->getFields();
         $contentFieldGqlTypes = [];
 
@@ -111,7 +117,7 @@ class LinkitGqlType
         }
 
         $fields = TypeManager::prepareFieldDefinitions(
-            array_merge($elementType::getFieldDefinitions(), $contentFieldGqlTypes),
+            array_merge($elementGqlType::getFieldDefinitions(), $contentFieldGqlTypes),
             $typeName
         );
 
