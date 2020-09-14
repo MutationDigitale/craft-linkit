@@ -21,7 +21,9 @@ class LinkitType implements GeneratorInterface, SingleGeneratorInterface
         $gqlTypes = [];
 
         foreach ($linkTypes as $linkType) {
-            if ($linkType->elementGqlInterface() === null) continue;
+            if ($linkType->elementGqlInterface() === null) {
+                continue;
+            }
 
             $gqlTypes[] = static::generateType($linkType);
         }
@@ -49,9 +51,7 @@ class LinkitType implements GeneratorInterface, SingleGeneratorInterface
             new \GraphQL\Type\Definition\ObjectType(
                 [
                     'name' => $typeName,
-                    'fields'  => function() use ($fields) {
-                        return $fields;
-                    },
+                    'fields' => $fields,
                     'interfaces' => [LinkitGqlType::getType()]
                 ]
             )
