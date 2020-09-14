@@ -35,18 +35,18 @@ class LinkitType implements GeneratorInterface, SingleGeneratorInterface
     public static function generateType($context)
     {
         $typeName = self::getFieldType($context);
-
         $elementGqlInterface = $context->elementGqlInterface();
-
-        $fields = TypeManager::prepareFieldDefinitions($elementGqlInterface::getFieldDefinitions(), $typeName);
+        $fieldName = $context->getTypeHandle();
 
         return GqlEntityRegistry::getEntity($typeName) ?: GqlEntityRegistry::createEntity(
             $typeName,
             new \GraphQL\Type\Definition\ObjectType(
                 [
                     'name' => $typeName,
-                    'fields' => $fields,
-                    //'interfaces' => [LinkitGqlType::getInterfaceType()]
+                    'fields' => [
+                        $fieldName => $elementGqlInterface::getFieldDefinitions()
+                    ],
+                    'interfaces' => [LinkitGqlType::getType()]
                 ]
             )
         );

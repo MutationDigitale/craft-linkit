@@ -41,24 +41,19 @@ class LinkitGqlType
 
         $type = GqlEntityRegistry::createEntity(
             self::class,
-            self::getInterfaceType()
+            new InterfaceType(
+                [
+                    'name' => static::getName(),
+                    'fields' => self::class . '::getFieldDefinitions',
+                    'description' => 'This is the interface implemented by all links.',
+                    'resolveType' => self::class . '::resolveTypeName',
+                ]
+            )
         );
 
         LinkitType::generateTypes();
 
         return $type;
-    }
-
-    public static function getInterfaceType()
-    {
-        return new InterfaceType(
-            [
-                'name' => static::getName(),
-                'fields' => self::class . '::getFieldDefinitions',
-                'description' => 'This is the interface implemented by all links.',
-                'resolveType' => self::class . '::resolveTypeName',
-            ]
-        );
     }
 
     /**
