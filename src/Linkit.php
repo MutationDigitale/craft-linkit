@@ -1,17 +1,18 @@
 <?php
 namespace fruitstudios\linkit;
 
+use craft\events\RegisterGqlTypesEvent;
+use craft\services\Gql;
 use fruitstudios\linkit\fields\LinkitField;
+use fruitstudios\linkit\models\LinkitGqlType;
 use fruitstudios\linkit\services\LinkitService;
 
 use Craft;
 use craft\base\Plugin;
 use yii\base\Event;
 
-use craft\events\PluginEvent;
 use craft\events\RegisterComponentTypesEvent;
 
-use craft\services\Plugins;
 use craft\services\Fields;
 
 use craft\commerce\Plugin as CommercePlugin;
@@ -37,13 +38,12 @@ class Linkit extends Plugin
         self::$plugin = $this;
         self::$commerceInstalled = class_exists(CommercePlugin::class);
 
-
         $this->setComponents([
             'service' => LinkitService::class,
         ]);
 
         Event::on(
-            Fields::className(),
+            Fields::class,
             Fields::EVENT_REGISTER_FIELD_TYPES,
             function (RegisterComponentTypesEvent $event) {
                 $event->types[] = LinkitField::class;
@@ -55,6 +55,14 @@ class Linkit extends Plugin
                 'name' => $this->name
             ]),
             __METHOD__
+        );
+
+        Event::on(
+            Gql::class,
+            Gql::EVENT_REGISTER_GQL_TYPES,
+            function (RegisterGqlTypesEvent $event) {
+                $event->types[] = LinkitGqlType::class;
+            }
         );
     }
 }

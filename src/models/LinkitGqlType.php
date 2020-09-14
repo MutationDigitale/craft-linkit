@@ -3,6 +3,7 @@
 namespace fruitstudios\linkit\models;
 
 use craft\gql\GqlEntityRegistry;
+use craft\gql\types\generators\AssetType;
 use fruitstudios\linkit\generators\LinkitType;
 use GraphQL\Type\Definition\InterfaceType;
 use GraphQL\Type\Definition\Type;
@@ -19,6 +20,14 @@ class LinkitGqlType
     public static function getName(): string
     {
         return 'linkitField_Linkit';
+    }
+
+    /**
+     * @return string
+     */
+    public static function getTypeGenerator(): string
+    {
+        return LinkitType::class;
     }
 
     /**
