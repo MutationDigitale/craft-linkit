@@ -21,29 +21,35 @@ class LinkitType implements GeneratorInterface, SingleGeneratorInterface
         $gqlTypes = [];
 
         foreach ($linkTypes as $linkType) {
-            $typeName = self::getFieldType($context);
+            if ($linkType->elementGqlType() === null) continue;
 
-            $elementGqlInterface = $context->elementGqlInterface();
-
-            if ($linkType->$elementGqlInterface() === null) continue;
-
-            $fields = TypeManager::prepareFieldDefinitions($elementGqlInterface::getFieldDefinitions(), $typeName);
-
-            $type = GqlEntityRegistry::getEntity($typeName) ?: GqlEntityRegistry::createEntity(
-                $typeName,
-                new \GraphQL\Type\Definition\ObjectType(
-                    [
-                        'name' => $typeName,
-                        'fields' => $fields,
-                        'interfaces' => [LinkitGqlType::getInterfaceType()]
-                    ]
-                )
-            );
-
-            $gqlTypes[] = $type;
+            $gqlTypes[] = static::generateType($linkType);
         }
 
         return $gqlTypes;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public static function generateType($context)
+    {
+        $typeName = self::getFieldType($context);
+
+        $elementGqlInterface = $context->elementGqlInterface();
+
+        $fields = TypeManager::prepareFieldDefinitions($elementGqlInterface::getFieldDefinitions(), $typeName);
+
+        return GqlEntityRegistry::getEntity($typeName) ?: GqlEntityRegistry::createEntity(
+            $typeName,
+            new \GraphQL\Type\Definition\ObjectType(
+                [
+                    'name' => $typeName,
+                    'fields' => $fields,
+                    'interfaces' => [LinkitGqlType::getInterfaceType()]
+                ]
+            )
+        );
     }
 
     private static function getFieldType($type): string
