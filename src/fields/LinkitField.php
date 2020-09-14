@@ -4,6 +4,7 @@ namespace fruitstudios\linkit\fields;
 use fruitstudios\linkit\Linkit;
 use fruitstudios\linkit\assetbundles\field\FieldAssetBundle;
 use fruitstudios\linkit\assetbundles\fieldsettings\FieldSettingsAssetBundle;
+use fruitstudios\linkit\models\LinkitGqlType;
 use fruitstudios\linkit\services\LinkitService;
 use fruitstudios\linkit\base\Link;
 use fruitstudios\linkit\models\Email;
@@ -20,6 +21,7 @@ use craft\base\PreviewableFieldInterface;
 use craft\base\Field;
 use craft\helpers\Json as JsonHelper;
 use craft\helpers\Db as DbHelper;
+use GraphQL\Type\Definition\Type;
 use yii\db\Schema;
 use yii\base\ErrorException;
 use craft\validators\ArrayValidator;
@@ -285,6 +287,14 @@ class LinkitField extends Field implements PreviewableFieldInterface
         }
 
         return $options;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getContentGqlType()
+    {
+        return LinkitGqlType::getType();
     }
 
     // Private Methods
