@@ -19,10 +19,6 @@ class LinkitType implements GeneratorInterface, SingleGeneratorInterface
         $gqlTypes = [];
 
         foreach ($linkTypes as $linkType) {
-            if ($linkType->elementGqlInterface() === null) {
-                continue;
-            }
-
             $gqlTypes[] = static::generateType($linkType);
         }
 
@@ -39,15 +35,20 @@ class LinkitType implements GeneratorInterface, SingleGeneratorInterface
         $elementGqlArguments = $context->elementGqlArguments();
         $fieldName = $context->getTypeHandle();
 
-        $elementFields = array($fieldName => array(
-            'name' => $fieldName,
-            'type' => $elementGqlInterface::getType(),
-            'args' => $elementGqlArguments::getArguments(),
-        ));
-        $fields = array_merge(
-            LinkitGqlType::getFieldDefinitions(),
-            $elementFields
-        );
+        $commonFields = LinkitGqlType::getFieldDefinitions();
+        $fields = $commonFields;
+
+        if ($elementGqlInterface !== null && $elementGqlArguments !== null) {
+            $elementFields = array($fieldName => array(
+                'name' => $fieldName,
+                'type' => $elementGqlInterface::getType(),
+                'args' => $elementGqlArguments::getArguments(),
+            ));
+            $fields = array_merge(
+                $commonFields,
+                $elementFields
+            );
+        }
 
         return GqlEntityRegistry::getEntity($typeName) ?: GqlEntityRegistry::createEntity(
             $typeName,
