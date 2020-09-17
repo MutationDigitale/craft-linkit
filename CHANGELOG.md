@@ -1,12 +1,6 @@
 # Linkit Changelog
 > One link field to rule them all, built for [Craft 3](http://craftcms.com)
 
-## 1.2 - 2020-09-14
-
-### Added
-
-- Support for GraphQL
-
 ## 1.1.11 - 2019-04-03
 
 ### Fixed
